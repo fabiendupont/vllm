@@ -56,6 +56,7 @@ ARG PIP_INDEX_URL
 ARG PIP_EXTRA_INDEX_URL
 ARG PIP_PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl
 ARG PIP_PYTORCH_CUDA_NIGHTLY_INDEX_BASE_URL=https://download.pytorch.org/whl/nightly
+ARG PIP_KEYRING_PROVIDER=disabled
 
 # Install uv for faster pip installs
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -276,6 +277,7 @@ ARG PIP_INDEX_URL
 ARG PIP_EXTRA_INDEX_URL
 ARG PIP_PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl
 ARG PIP_PYTORCH_CUDA_NIGHTLY_INDEX_BASE_URL=https://download.pytorch.org/whl/nightly
+ARG PIP_KEYRING_PROVIDER=disabled
 
 # Install uv for faster pip installs
 RUN --mount=type=cache,target=/root/.cache/uv \
