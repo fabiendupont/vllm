@@ -18,6 +18,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 ARG DEADSNAKES_MIRROR_URL
 ARG DEADSNAKES_GPGKEY_URL
+ARG PIP_PYZ_URL
 
 # Install Python and other dependencies
 RUN echo 'tzdata tzdata/Areas select America' | debconf-set-selections \
@@ -42,7 +43,11 @@ RUN echo 'tzdata tzdata/Areas select America' | debconf-set-selections \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 1 \
     && update-alternatives --set python3 /usr/bin/python${PYTHON_VERSION} \
     && ln -sf /usr/bin/python${PYTHON_VERSION}-config /usr/bin/python3-config \
-    && curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION} \
+    && if [ ! -z ${PIP_PYZ_URL} ] ; then \
+        curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION} ; \
+    else \
+        curl -L ${PIP_YZ_URL} | python${PYTHON_VERSION} ; \
+    fi \
     && python3 --version && python3 -m pip --version
 
 # Install uv for faster pip installs
@@ -206,6 +211,7 @@ ARG TARGETPLATFORM
 
 ARG DEADSNAKES_MIRROR_URL
 ARG DEADSNAKES_GPGKEY_URL
+ARG PIP_PYZ_URL
 
 RUN PYTHON_VERSION_STR=$(echo ${PYTHON_VERSION} | sed 's/\.//g') && \
     echo "export PYTHON_VERSION_STR=${PYTHON_VERSION_STR}" >> /etc/environment
@@ -234,7 +240,11 @@ RUN echo 'tzdata tzdata/Areas select America' | debconf-set-selections \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 1 \
     && update-alternatives --set python3 /usr/bin/python${PYTHON_VERSION} \
     && ln -sf /usr/bin/python${PYTHON_VERSION}-config /usr/bin/python3-config \
-    && curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION} \
+    && if [ ! -z ${PIP_PYZ_URL} ] ; then \
+        curl -sS https://bootstrap.pypa.io/get-pip.py | python${PYTHON_VERSION} ; \
+    else \
+        curl -L ${PIP_YZ_URL} | python${PYTHON_VERSION} ; \
+    fi \
     && python3 --version && python3 -m pip --version
 # Install uv for faster pip installs
 RUN --mount=type=cache,target=/root/.cache/uv \
